@@ -1,4 +1,5 @@
-// var searchBtnEl = document.querySelector('#search-btn')
+var searchBtnEl = document.querySelector('#search-btn')
+var searchFormEl = document.querySelector('#search-form')
 // //for when user clicks on search button
 // function handleSearchBtnClick() {
 //     //fetch weather for city in input
@@ -20,58 +21,83 @@
 // searchBtnEl.addEventListener('click', handleSearchBtnClick);
 // localStorage.setItem(id, description);
 
-
-var cityNameEl = document.querySelector('#cityname'); 
-var tempEl = document.querySelector('#temp');
-var windEl = document.querySelector('#wind');
-var humdEl = document.querySelector('#humidity');
-var dateEl = document.querySelector('#date');
-var resultsrEl = document.querySelector('#results');
 //takes in city name and returns city data 
 var searchSubmit = function (event) {
     event.preventDefault();
 
-    var cityname = cityNameEl.value.trim();
-    console.log(cityname);
+    //cityNameEl.value.trim();
+    console.log(cityName);
 
-    if (cityname) {
-        getForecast(cityname);
+    if (cityName) {
+        getForecast(cityName);
 
         resultsrEl.textContent = '';
-        cityNameEl.value = '';
+        searchNameEl.value = '';
     }
 };
-var limit = '1';
-var getForecast = function(cityname) {
-    var apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${cityname}&limit=${limit}&appid=8a12f98687e75d009acb2c76284f6f41`;
+var searchNameEl = document.querySelector('#search-input');
+var limit = 1;
+var apiKey = '8a12f98687e75d009acb2c76284f6f41'
+function searchApi() {
 
-
+    var apiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=${limit}&appid=${apiKey}`;
     fetch(apiUrl)
-    .then(function (response) {
-        if (response.ok) {
-            console.log(response);
-            response.json().then(function (data) {
-                console.log(data);
-                displayForecast(data, cityname);
-            });
-        } else {
-            alert('Error: ' + response.statusText);
+        .then(function (response) {
+            var lat = data[0].lat
+            var lon = data[0].lon
+            var cityNameList = data.list[0].name;
+            var latlongUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
         }
-    })
-    .catch(function (error) {
-        alert('Unable to connect to acess location');
-    });
-};
+            fetch(latlongUrl).then(function (response)){
+                return response.json();
+            }).then(function (data)) {
+        var cityNames = document.querySelector('#city-results');
+        var tempEl = document.querySelector('#temp');
+        var windEl = document.querySelector('#wind');
+        var humdEl = document.querySelector('#humidity');
+        var dateEl = document.querySelector('#date');
+        var emojiEl = document.querySelector('#icon')
+        var date = data.list[0].dt_text;
+        var temp = data.list[0].main.temp;
+        var humidity = data.list[0].main.humidity;
+        var windspeed = data.list[0].wind.speed;
+        var emoji = data.list[0].weather[0].icon;
+
+        //emojiEl.setAttribute("src", iconurl);
+        tempEl.innerHTML = "Temp: " + temp;
+        windEl.innerHTML = "Wind Speed: " + windspeed;
+        humdEl.innerHTML = "Humidity: " + humidity;
+        dateEl.innerHTML = "Date: " + date;
+        emojiEl.innerHTML = emoji;
+        cityNames.innerHTML = cityNameList;
+        
+        console.log(temp, humidity, windspeed);
+    }};
+
+    searchBtnEl.addEventListener('click', searchSubmit)
+    searchFormEl.addEventListener('submit', searchSubmit)
+
+    // function renderCurrentWeather() {
 
 
+    // function renderForecast(mappedData) {
 
-// function renderCurrentWeather() {
-    // tempEl.textContent = 'Temp: ' + temp;
-    // windEl.textContent = 'Wind Speed: ' + wind;
-    // humdEl.textContent = 'Humidity: ' + humd;
-    // dateEl.textContent = 'Date: ' = date;
-// };
+    // };
 
-// function renderForecast(mappedData) {
+//     if (response.ok) {
+//         console.log(response);
+//         response.json().then(function (data) {
+//             console.log(data);
 
-// };
+//         });
+//     } else {
+//         alert('Error: ' + response.statusText);
+//     }
+// }
+// .catch (function (error) {
+//     alert('Unable to connect to acess location');
+// });
+
+
+29.7589382
+-95.3676974
