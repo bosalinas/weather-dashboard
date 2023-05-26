@@ -90,6 +90,12 @@ function display5Forecast(forecastData) {
     }
 };
 
+function callCityButton(){
+    console.log(this.textContent);
+    getLocation(this.textContent);
+    display5Forecast(this.data);
+};
+
 //temp converter 
 function temperatureConverter(temp) {
     return Math.round((temp - 273.15) * 1.8 + 32);
@@ -98,8 +104,6 @@ function temperatureConverter(temp) {
 function saveSearchHistory() {
     localStorage.setItem("history", JSON.stringify(searchHistory));
 };
-
-display5Forecast();
 
 searchBtnEl.addEventListener('click', SearchForm)
 searchFormEl.addEventListener('submit', SearchForm)
