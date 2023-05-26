@@ -51,7 +51,7 @@ function searchApi(cityName) {
                 var emoji = data.list[0].weather[0].icon;
                 var emojiUrl = 'https://openweathermap.org/img/wn/10d' + emoji + '@2x.png';
 
-                emojiEl.setAttribute("src", emojiUrl);
+                //emojiEl.setAttribute("src", emojiUrl);
                 tempEl.innerHTML = "Temp: " + temp;
                 windEl.innerHTML = "Wind Speed: " + windspeed;
                 humdEl.innerHTML = "Humidity: " + humidity;
@@ -60,7 +60,9 @@ function searchApi(cityName) {
                 cityNames.innerHTML = cityName;
 
                 console.log(date, temp, humidity, windspeed, emoji);
-                display5Forecast(forecastData);    
+                display5Forecast(data);
+                
+                
             })
         })
 };
