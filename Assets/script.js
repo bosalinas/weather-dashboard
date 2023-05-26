@@ -34,33 +34,60 @@ function searchApi(cityName) {
             var lat = data[0].lat;
             var lon = data[0].lon;
             var latlongUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
+
+            fetch(latlongUrl).then(function (response) {
+                return response.json();
+            }).then(function (data) {
+                var cityNames = document.querySelector('#city-results');
+                var tempEl = document.querySelector('#temp');
+                var windEl = document.querySelector('#wind');
+                var humdEl = document.querySelector('#humidity');
+                var dateEl = document.querySelector('#date');
+                var emojiEl = document.querySelector('#icon')
+                var date = data.list[0].dt_text;
+                var temp = data.list[0].main.temp;
+                var humidity = data.list[0].main.humidity;
+                var windspeed = data.list[0].wind.speed;
+                var emoji = data.list[0].weather[0].icon;
+                var emojiUrl = 'https://openweathermap.org/img/wn/10d' + emoji + '@2x.png';
+
+                emojiEl.setAttribute("src", emojiUrl);
+                tempEl.innerHTML = "Temp: " + temp;
+                windEl.innerHTML = "Wind Speed: " + windspeed;
+                humdEl.innerHTML = "Humidity: " + humidity;
+                dateEl.innerHTML = "Date: " + date;
+                emojiEl.innerHTML = emojiUrl;
+                cityNames.innerHTML = cityName;
+
+                console.log(date, temp, humidity, windspeed, emoji);
+
+            })
+        })
+};
+
+function display5Forecast(forecastData) {
+    for (i = 8; i < forecastData.list.length; i = i + 8) {
+        var forecastContEl = document.querySelector('#forecast');
+        var temp5 = document.querySelector('#forecast-temp');
+        var date5 = document.querySelector('#date-forecast');
+        var emoji5 = document.querySelector('#emoji');
+        var wind5 = document.querySelector('#forecast-wind');
+        var humd5 = document.querySelector('#forecast-hum');
+        var forecastEmojiUrl = 'https://openweathermap.org/img/wn/' + forecastEmoji + '@2x.png';
+       
+        forecastEmoji.setAttribute("src", forecastEmojiUrl);
+        date5.textContent = forecastData.list[i].dt_txt;
+        temp5.textContent = forecastData.list[i].main.temp + "°F";
+        humd5.textContent = forecastData.list[i].main.humidity + "%";
+        wind5.textContent = forecastData.list[i].wind.speed + "mph";
         
-    fetch(latlongUrl).then(function (response) {
-        return response.json();
-    }).then(function (data) {
-        var cityNames = document.querySelector('#city-results');
-        var tempEl = document.querySelector('#temp');
-        var windEl = document.querySelector('#wind');
-        var humdEl = document.querySelector('#humidity');
-        var dateEl = document.querySelector('#date');
-        var emojiEl = document.querySelector('#icon')
-        var date = data.list[0].dt_text;
-        var temp = data.list[0].main.temp;
-        var humidity = data.list[0].main.humidity;
-        var windspeed = data.list[0].wind[0].speed;
-        var emoji = data.list[0].weather[0].icon;
+        forecastContEl.append(date5);
+        forecastContEl.append(temp5);
+        forecastContEl.append(humd5);
+        forecastContEl.append(wind5);
+        forecastContEl.append(emoji5);
 
-        //emojiEl.setAttribute("src", iconurl);
-        tempEl.innerHTML = "Temp: " + temp;
-        windEl.innerHTML = "Wind Speed: " + windspeed;
-        humdEl.innerHTML = "Humidity: " + humidity;
-        dateEl.innerHTML = "Date: " + date;
-        emojiEl.innerHTML = emoji;
-        cityNames.innerHTML = cityName;
-
-    })
-    console.log(temp, humidity, windspeed);
-    })
+    }
 };
 
 //temp converter 
@@ -70,7 +97,9 @@ function temperatureConverter(temp) {
 
 function saveSearchHistory() {
     localStorage.setItem("history", JSON.stringify(searchHistory));
-}
+};
+
+display5Forecast();
 
 searchBtnEl.addEventListener('click', SearchForm)
 searchFormEl.addEventListener('submit', SearchForm)
