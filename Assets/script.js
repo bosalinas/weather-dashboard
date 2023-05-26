@@ -43,7 +43,7 @@ function searchApi(cityName) {
                 var windEl = document.querySelector('#wind');
                 var humdEl = document.querySelector('#humidity');
                 var dateEl = document.querySelector('#date');
-                var emojiEl = document.querySelector('#icon')
+                var emojiEl = document.querySelector('#icon');
                 var date = data.list[0].dt_text;
                 var temp = data.list[0].main.temp;
                 var humidity = data.list[0].main.humidity;
@@ -60,7 +60,7 @@ function searchApi(cityName) {
                 cityNames.innerHTML = cityName;
 
                 console.log(date, temp, humidity, windspeed, emoji);
-
+                display5Forecast(forecastData);    
             })
         })
 };
@@ -73,9 +73,12 @@ function display5Forecast(forecastData) {
         var emoji5 = document.querySelector('#emoji');
         var wind5 = document.querySelector('#forecast-wind');
         var humd5 = document.querySelector('#forecast-hum');
-        var forecastEmojiUrl = 'https://openweathermap.org/img/wn/' + forecastEmoji + '@2x.png';
+        var emojiData = forecastData.list[i].icon;
+
+        var forecastEmojiUrl = 'https://openweathermap.org/img/wn/' + emojiData + '@2x.png';
        
-        forecastEmoji.setAttribute("src", forecastEmojiUrl);
+        emoji5.setAttribute("src", forecastEmojiUrl);
+       
         date5.textContent = forecastData.list[i].dt_txt;
         temp5.textContent = forecastData.list[i].main.temp + "°F";
         humd5.textContent = forecastData.list[i].main.humidity + "%";

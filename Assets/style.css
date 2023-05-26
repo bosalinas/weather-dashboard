@@ -12,9 +12,8 @@ body {
     justify-content: flex-start;
     align-items: flex-start;
     overflow: hidden;
-    background-image: url(andre-benz-sLokLIacItI-unsplash2.jpg);
-}
-
+    background-image: url("./Images/andre-benz-sLokLIacItI-unsplash2.jpg");}
+    
 main {
     overflow-y: auto;
 }
